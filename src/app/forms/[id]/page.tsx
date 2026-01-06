@@ -14,16 +14,23 @@ import {
 import {
   DraggableField,
   FieldsSidebar,
-} from "../components/form-builder/FieldsSidebar";
-import { FormCanvas } from "../components/form-builder/FormCanvas";
-import { PropertiesPanel } from "../components/form-builder/PropertiesPanel";
-import { Button } from "../components/UI/button";
+} from "../../components/form-builder/FieldsSidebar";
+import { FormCanvas } from "../../components/form-builder/FormCanvas";
+import { PropertiesPanel } from "../../components/form-builder/PropertiesPanel";
+import { Button } from "../../components/UI/button";
 import { Save, Eye } from "lucide-react";
-import { useFormBuilderStore } from "../stores/use-form";
-
+import { useFormBuilderStore } from "../../stores/use-form";
+import { useParams } from "next/navigation";
+import { useGetFormFields, useSaveForm } from "@/app/api/forms/forms.api";
+import { useEffect } from "react";
 
 export default function FormBuilderPage() {
+  const param = useParams();
+  const formId = param.id as string;
+  const saveForm = useSaveForm();
+  const { data, isLoading } = useGetFormFields({ id: formId });
   const fields = useFormBuilderStore((state) => state.fields);
+  const setFieldsFromApi = useFormBuilderStore((s) => s.setFieldsFromApi);
   const selectedFieldId = useFormBuilderStore((state) => state.selectedFieldId);
   const activeField = useFormBuilderStore((state) => state.activeField);
   const setActiveField = useFormBuilderStore((state) => state.setActiveField);
@@ -38,6 +45,13 @@ export default function FormBuilderPage() {
     useSensor(TouchSensor),
     useSensor(KeyboardSensor)
   );
+
+  useEffect(() => {
+    if (data?.fields) {
+      setFieldsFromApi(data.fields);
+    }
+  }, [data, setFieldsFromApi]);
+
   const handleDragStart = (event: DragStartEvent) => {
     const activeId = event.active.id as string;
 
@@ -81,6 +95,17 @@ export default function FormBuilderPage() {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      await saveForm.mutateAsync({
+        payload: {
+          id: formId,
+          fields: fields,
+        },
+      });
+    } catch (error) {}
+  };
+
   const selectedField = fields.find((f) => f.id === selectedFieldId) || null;
 
   return (
@@ -104,7 +129,7 @@ export default function FormBuilderPage() {
               <Button variant="outline" className="gap-2">
                 <Eye className="w-4 h-4" /> Preview
               </Button>
-              <Button className="gap-2" onClick={() => console.log("saved")}>
+              <Button className="gap-2" onClick={handleSave}>
                 <Save className="w-4 h-4" /> Save Form
               </Button>
             </div>

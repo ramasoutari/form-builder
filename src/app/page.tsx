@@ -2,6 +2,8 @@ import Link from "next/link";
 import PhotoFilterIcon from "@mui/icons-material/PhotoFilter";
 import DescriptionIcon from "@mui/icons-material/Description";
 import "./styles/home.scss";
+import { Button } from "./components/UI/button";
+import { Card } from "./components/UI/card";
 
 export default function Home() {
   return (
@@ -25,23 +27,23 @@ export default function Home() {
           </p>
 
           <div className="home-actions">
-            <Link href="/form-builder">
-              <button className="gap-2 text-lg px-8 py-6">
+            <Link href="/auth/login">
+              <Button className="gap-2 text-lg px-8 py-6">
                 <DescriptionIcon className="w-5 h-5" />
                 Start Building
-              </button>
+              </Button>
             </Link>
           </div>
 
           <div className="feature-grid">
-            <div className="feature-card">
+            <Card className="feature-card">
               <div className="feature-icon bg-blue-100 dark:bg-blue-900">
                 <DescriptionIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="feature-title">Drag & Drop</h3>
               <p className="feature-text">Intuitive interface to build forms</p>
-            </div>
-            <div className="feature-card">
+            </Card>
+            <Card className="feature-card">
               <div className="feature-icon bg-blue-100 dark:bg-blue-900">
                 <PhotoFilterIcon className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
@@ -51,9 +53,9 @@ export default function Home() {
                 Customize every aspect of your fields with comprehensive
                 property controls
               </p>
-            </div>
+            </Card>
 
-            <div className="feature-card">
+            <Card className="feature-card">
               <div className="feature-icon bg-blue-100 dark:bg-blue-900">
                 <DescriptionIcon className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
               </div>
@@ -63,7 +65,7 @@ export default function Home() {
                 Built with modern technologies and best practices for real-world
                 applications
               </p>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

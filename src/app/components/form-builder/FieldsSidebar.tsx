@@ -5,6 +5,7 @@ import { useDraggable } from "@dnd-kit/core";
 import * as Icons from "lucide-react";
 import { Card } from "../UI/card";
 import { FIELD_TYPES } from "@/app/lib/form-builder/constant";
+import { FieldType } from "@/app/lib/form-builder/types";
 
 interface DraggableFieldProps {
   type: FieldType;
